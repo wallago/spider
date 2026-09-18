@@ -1,0 +1,23 @@
+[package]
+name        = "spider"
+description = "Multi-screen info panel (Over ESP32)."
+publish     = false
+
+version.workspace      = true
+authors.workspace      = true
+license.workspace      = true
+repository.workspace   = true
+edition.workspace      = true
+rust-version.workspace = true
+
+[dependencies]
+embedded-graphics = "0.8.2"
+esp-idf-svc       = "0.53.0"
+log               = "0.4"
+mipidsi           = "0.10.0"
+
+[build-dependencies]
+embuild = { version = "0.33.5", features = ["espidf"] }
+
+[lints]
+workspace = true

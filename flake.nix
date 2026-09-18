@@ -8,6 +8,7 @@
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-esp-dev.url = "github:mirrexagon/nixpkgs-esp-dev";
   };
 
   outputs =
@@ -18,9 +19,9 @@
       rust-overlay,
       naersk,
       claude-code,
+      nixpkgs-esp-dev,
       ...
     }:
-    # ── System-agnostic outputs (modules) live out here ──
     {
       nixosModules.default = import ./nix/module.nix self;
       homeModules.default = import ./nix/hm-module.nix self;
@@ -77,6 +78,11 @@
             # ── Claude Settings ─────────────────────────────────────
             claude = claude-code.packages.${system}.default;
 
+            # ── ESP ──────────────────────────────────────────────────
+            # ESP-IDF v5.5.2 with the RISC-V toolchain only. Its setup hook
+            # exports IDF_PATH, which `ESP_IDF_TOOLS_INSTALL_DIR = "fromenv"` reads.
+            esp-idf = nixpkgs-esp-dev.packages.${system}.esp-idf-riscv;
+
             # ── Tooling shared by the dev shell and CI ───────────────
             ciTools = with pkgs; [
               rust
@@ -99,10 +105,17 @@
               statix
               deadnix
 
-              # crate deps
+              # ESP
               espflash
               ldproxy
+              esp-idf
+
+              # crate deps
             ];
+
+            # bindgen (run by esp-idf-sys) loads libclang.so at build time and
+            # only finds it through this variable, not through PATH.
+            LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
           in
           {
             # ── Packages ──────────────────────────────────────────────
@@ -155,6 +168,7 @@
               in
               pkgs.mkShell {
                 PROJECT_BANNER = pkgs.lib.getExe banner;
+                inherit LIBCLANG_PATH;
                 buildInputs =
                   ciTools
                   ++ (with pkgs; [
@@ -168,6 +182,7 @@
             # ── CI Shell (nix develop .#ci) ──────────────────────────
             # Lean: just the toolchain + checks, no editor/claude/shellHook.
             devShells.ci = pkgs.mkShell {
+              inherit LIBCLANG_PATH;
               buildInputs = ciTools;
             };
           }
