@@ -1,0 +1,113 @@
+import { VerticalBox, HorizontalBox } from "std-widgets.slint";
+import "fonts/Inter-Regular.ttf";
+import "fonts/Inter-Bold.ttf";
+import "fonts/Inter-ExtraBold.ttf";
+
+export component CreditScreen inherits Window {
+    width: 240px;
+    height: 320px;
+    background: #0B1020;
+    default-font-family: "Inter";
+
+    in property <string> header: "Claude";
+    in property <string> amount: "18.42";
+    in property <string> total: "50.00";
+    in property <float> progress: 0.37;
+    in property <bool> active: true;
+
+    Rectangle {
+        width: parent.width;
+        height: parent.height;
+        background: #0B1020;
+
+        VerticalBox {
+            spacing: 12px;
+            padding: 16px;
+
+            // Header
+            HorizontalBox {
+                alignment: center;
+
+                Text {
+                    text: root.header;
+                    color: white;
+                    font-size: 22px;
+                    font-weight: 700;
+                }
+
+                Rectangle {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 7px;
+                    background: root.active ? #35F4A0 : #666;
+                }
+            }
+
+            Rectangle {
+                height: 20px;
+            }
+
+            // Main amount
+            HorizontalBox {
+                alignment: center;
+
+                Text {
+                    text: "€";
+                    color: #35F4A0;
+                    font-size: 48px;
+                    font-weight: 700;
+                }
+
+                Text {
+                    text: root.amount;
+                    color: white;
+                    font-size: 72px;
+                    font-weight: 800;
+                }
+            }
+
+            Text {
+                text: "REMAINING";
+                horizontal-alignment: center;
+                color: #7E8AA8;
+                font-size: 18px;
+                letter-spacing: 3px;
+            }
+
+            Rectangle {
+                height: 24px;
+            }
+
+            // Progress bar
+            Rectangle {
+                width: parent.width;
+                height: 18px;
+                background: #2A334A;
+                border-radius: 9px;
+
+                Rectangle {
+                    width: parent.width * root.progress;
+                    height: parent.height;
+                    background: #35F4A0;
+                    border-radius: 9px;
+                }
+            }
+
+            // Footer
+            HorizontalBox {
+                Text {
+                    text: "€" + root.amount + " / €" + root.total;
+                    color: #7E8AA8;
+                    font-size: 16px;
+                }
+
+                Text {
+                    text: (root.progress * 100) + "%";
+                    color: #7E8AA8;
+                    font-size: 16px;
+                    horizontal-alignment: right;
+                }
+            }
+        }
+    }
+}
