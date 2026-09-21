@@ -2,17 +2,15 @@
 target = "riscv32imafc-esp-espidf"
 
 [target.riscv32imafc-esp-espidf]
-linker = "ldproxy"
-# ESP-IDF 5.x uses a 64-bit `time_t`; libc must be told.
+linker    = "ldproxy"
 rustflags = ["--cfg", "espidf_time64"]
+runner    = "espflash flash --monitor"
 
 [env]
-MCU = "esp32p4"
-# Use the ESP-IDF the flake provides (`IDF_PATH`, toolchain on `PATH`) instead
-# of letting embuild download one — its prebuilt toolchains don't run on NixOS.
+MCU                        = "esp32p4"
 ESP_IDF_TOOLS_INSTALL_DIR  = "fromenv"
 ESP_IDF_SDKCONFIG_DEFAULTS = { value = "sdkconfig.defaults", relative = true }
+ESP_LOG                    = "info"
 
 [unstable]
-# No prebuilt std for ESP-IDF targets; build it from `rust-src`.
 build-std = ["std", "panic_abort"]

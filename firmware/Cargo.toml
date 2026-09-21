@@ -15,7 +15,8 @@ embedded-graphics = "0.8.2"
 esp-idf-svc       = "0.53.0"
 log               = "0.4"
 mipidsi           = "0.10.0"
-slint             = { version = "1.16.1", default-features = false, features = ["compat-1-2", "libm", "renderer-software", "unsafe-single-threaded"] }
+slint             = { version = "1.16.1", default-features = false, features = ["compat-1-2", "libm", "renderer-software", "software-renderer-path", "unsafe-single-threaded"] }
+spider-core       = { workspace = true }
 
 [build-dependencies]
 embuild     = { version = "0.33.5", features = ["espidf"] }

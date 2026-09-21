@@ -1,0 +1,62 @@
+import { Theme } from "theme.slint";
+
+export component Header {
+    in property <string> status;
+
+    width: 360px;
+    height: 94px;
+
+    Image {
+        x: (root.width - self.width) / 2;
+        y: 15px;
+        width: 42px;
+        height: 26px;
+
+        source: @image-url("../icons/Leaf.png");
+        colorize: Theme.accent-color;
+    }
+
+    Text {
+        x: 0px;
+        y: 44px;
+        width: 360px;
+        height: 34px;
+
+        text: "ENVIRONMENT";
+        color: Theme.text-main;
+
+        font-size: 28px;
+        font-weight: 700;
+
+        horizontal-alignment: center;
+    }
+
+    property <length> dot-size: 5px;
+    property <length> dot-gap: 3px;
+
+    status-label := Text {
+        x: (root.width - (self.preferred-width + dot-size + dot-gap)) / 2
+            + dot-size + dot-gap;
+        y: 78px;
+        height: 16px;
+
+        text: status;
+
+        color: Theme.accent-color;
+        font-size: 13px;
+        font-weight: 700;
+
+        vertical-alignment: center;
+    }
+
+    Rectangle {
+        x: status-label.x - dot-size - dot-gap;
+        y: status-label.y + (status-label.height - self.height) / 2;
+
+        width: dot-size;
+        height: dot-size;
+
+        border-radius: self.width / 2;
+        background: Theme.accent-color;
+    }
+}

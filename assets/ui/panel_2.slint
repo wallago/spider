@@ -1,0 +1,40 @@
+import { Theme } from "theme.slint";
+import { Header } from "header.slint";
+
+export component Panel2Display inherits Window {
+    width: 240px;
+    height: 284px;
+
+    default-font-family: "Inter";
+    background: Theme.background-color;
+
+    // ─────────────────────────────────────────────
+    // Values
+    // ─────────────────────────────────────────────
+
+    in property <string> sensor-status: "X6 CONNECTED";
+
+    // ═════════════════════════════════════════════
+    // Outer display ring
+    // ═════════════════════════════════════════════
+
+    Rectangle {
+        x: 0px;
+        y: 0px;
+        width: 360px;
+        height: 360px;
+
+        border-radius: 180px;
+        background: transparent;
+
+        border-width: 3px;
+        border-color: #2d3035;
+    }
+
+    Header {
+        x: 0px;
+        y: 0px;
+
+        status: sensor-status;
+    }
+}
