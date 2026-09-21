@@ -8,7 +8,7 @@ fn main() {
     // Fonts are rasterised here, at the sizes the UI uses, as anti-aliased
     // glyphs — no font engine runs on the chip.
     slint_build::compile_with_config(
-        "../assets/credit_dashboard.slint",
+        "../assets/ui.slint",
         slint_build::CompilerConfiguration::new()
             .embed_resources(slint_build::EmbedResourcesKind::EmbedForSoftwareRenderer),
     )
