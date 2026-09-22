@@ -90,6 +90,7 @@
               cargo-nextest
               cargo-edit
               cargo-audit
+              cargo-insta
               lychee
               cargo-machete
               cargo-deny
