@@ -1,13 +1,6 @@
 //! Bring up two 1.83" ST7789 panels on one SPI bus and drive a Slint UI on each.
 
-use std::{
-    cell::Cell,
-    ops::Range,
-    rc::Rc,
-    time::{Duration, Instant},
-};
-
-use log::{error, info};
+use log::error;
 
 /// Main application.
 mod app;
@@ -18,11 +11,7 @@ fn main() {
     esp_idf_svc::sys::link_patches();
     esp_idf_svc::log::EspLogger::initialize_default();
 
-    // esp_println::logger::init_logger_from_env();
-
-    info!("{} booting", spider_core::version!());
-
-    // if let Error(e) = app::run() {
-    //     error!("Firmware stopped: {e}");
-    // }
+    if let Err(e) = app::run() {
+        error!("Firmware stopped: {e}");
+    }
 }
