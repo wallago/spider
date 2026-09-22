@@ -29,11 +29,21 @@ use slint::{
         },
     },
 };
-use spider_core::error::Error;
 
 use crate::app::screens::Screens;
 
+mod board;
 mod screens;
+
+#[derive(Debug)]
+enum Error {
+    /// ESP-IDF refused a driver: the SPI bus or a GPIO.
+    Esp(EspError),
+    /// The panel failed to init or draw. mipidsi's errors only implement `Debug`.
+    Panel(String),
+    /// Slint refused the platform, or the UI failed to build.
+    Ui(String),
+}
 
 /// Runs the widget. Never returns: there is no caller to return to.
 pub(crate) fn run(peripherals: Peripherals) -> Result<(), Error> {
@@ -50,5 +60,30 @@ pub(crate) fn run(peripherals: Peripherals) -> Result<(), Error> {
     // loop {
     //     delay.delay_millis(1_000);
     // }
+
+    let mut lit = false;
+
+    loop {
+        slint::platform::update_timers_and_animations();
+
+        for (window, display) in windows.iter().zip(displays.iter_mut()) {
+            draw(window, display)?;
+        }
+
+        if !lit {
+            // The pass above drew every panel in full, so none shows garbage.
+            for backlight in &mut backlights {
+                backlight.set_high()?;
+            }
+            lit = true;
+            info!("first frame drawn on {PANELS} panels");
+        }
+
+        // Animations need frames; otherwise idle at ~60 Hz polling.
+        if !windows.iter().any(|window| window.has_active_animations()) {
+            FreeRtos::delay_ms(16);
+        }
+    }
+
     Ok(())
 }

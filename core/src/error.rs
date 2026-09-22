@@ -9,6 +9,12 @@ pub enum Error {
     /// ESP-IDF error, as its raw `esp_err_t` code.
     #[error("ESP error: code {0}")]
     ESP(i32),
+    /// Spi Bus error, it is not set yet.
+    #[error("SPI Bus is missing")]
+    SpiBus,
+    /// Spi communication error occur.
+    #[error("SPI communication: {0}")]
+    Spi(&'static str),
 }
 
 /// Type alias for the standard [`Result`] type.
