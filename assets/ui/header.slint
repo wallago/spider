@@ -3,7 +3,7 @@ import { Theme } from "theme.slint";
 export component Header {
     in property <string> status;
 
-    width: 360px;
+    width: 240px;
     height: 94px;
 
     Image {
@@ -19,7 +19,7 @@ export component Header {
     Text {
         x: 0px;
         y: 44px;
-        width: 360px;
+        width: parent.width;
         height: 34px;
 
         text: "ENVIRONMENT";

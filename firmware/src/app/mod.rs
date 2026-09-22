@@ -65,25 +65,25 @@ pub(crate) fn run() -> Result<(), Error> {
     let peripherals = Peripherals::take()?;
     let bus = Screen::bus(BusPins {
         spi: peripherals.spi2,
-        clk: peripherals.pins.gpio21.into(),
-        din: peripherals.pins.gpio20.into(),
+        clk: peripherals.pins.gpio20.into(),
+        din: peripherals.pins.gpio21.into(),
     })?;
     let mut screen_1 = Screen::new(
         bus,
         PanelPins {
-            cs: peripherals.pins.gpio27.into(),
-            dc: peripherals.pins.gpio46.into(),
-            rst: peripherals.pins.gpio33.into(),
-            bl: peripherals.pins.gpio32.into(),
+            cs: peripherals.pins.gpio18.into(),
+            dc: peripherals.pins.gpio17.into(),
+            rst: peripherals.pins.gpio16.into(),
+            bl: peripherals.pins.gpio15.into(),
         },
     )?;
     let mut screen_2 = Screen::new(
         bus,
         PanelPins {
             cs: peripherals.pins.gpio14.into(),
-            dc: peripherals.pins.gpio4.into(),
+            dc: peripherals.pins.gpio6.into(),
             rst: peripherals.pins.gpio5.into(),
-            bl: peripherals.pins.gpio6.into(),
+            bl: peripherals.pins.gpio4.into(),
         },
     )?;
 
